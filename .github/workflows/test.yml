@@ -1,0 +1,42 @@
+name: Test
+
+on:
+  - push
+  - pull_request
+
+jobs:
+
+  linux:
+    name: Linux (Swift ${{ matrix.swift-version }})
+    strategy:
+      fail-fast: false
+      matrix:
+        swift-version:
+          - "6.0"
+    runs-on: ubuntu-24.04
+    container:
+      image: swift:${{ matrix.swift-version }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Swift Version
+      run: swift --version
+    - name: Build
+      run: cd xXxprojectxXx && swift build -v
+    - name: Test
+      run: cd xXxprojectxXx && swift test -v
+
+  macos:
+    name: macOS
+    runs-on: macos-15
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Change directory to xXxprojectxXx
+      run: cd xXxprojectxXx
+    - name: Swift Version
+      run: swift --version
+    - name: Build
+      run: cd xXxprojectxXx && swift build -v
+    - name: Test
+      run: cd xXxprojectxXx && swift test -v
